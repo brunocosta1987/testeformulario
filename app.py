@@ -1,5 +1,7 @@
 import streamlit as st
 import sqlite3
+import pandas as pd
+from io import BytesIO
 
 # Função para conectar ao banco de dados
 def conectar_db():
@@ -16,7 +18,7 @@ def conectar_db():
     conn.commit()
     return conn
 
-# Função para inserir dados
+# Inserir usuário
 def inserir_usuario(nome, sobrenome, email):
     conn = conectar_db()
     c = conn.cursor()
@@ -24,7 +26,7 @@ def inserir_usuario(nome, sobrenome, email):
     conn.commit()
     conn.close()
 
-# Função para consultar dados
+# Consultar usuários
 def consultar_usuarios():
     conn = conectar_db()
     c = conn.cursor()
@@ -54,7 +56,6 @@ st.markdown("<h1 style='text-align: center;'>Cadastro de Usuários</h1>", unsafe
 # Menu lateral
 menu = st.sidebar.selectbox("Menu", ["Cadastrar", "Consultar"])
 
-# Tela de cadastro
 if menu == "Cadastrar":
     st.subheader("Cadastrar Novo Usuário")
     nome = st.text_input("Nome")
@@ -68,16 +69,13 @@ if menu == "Cadastrar":
         else:
             st.warning("Por favor, preencha todos os campos.")
 
-# Tela de consulta
 elif menu == "Consultar":
     st.subheader("Lista de Usuários Cadastrados")
     usuarios = consultar_usuarios()
-
     if usuarios:
         df = pd.DataFrame(usuarios, columns=["Nome", "Sobrenome", "Email"])
         st.dataframe(df)
 
-        # Botão para download como Excel
         output = BytesIO()
         with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
             df.to_excel(writer, index=False, sheet_name='Usuarios')
@@ -91,5 +89,3 @@ elif menu == "Consultar":
         )
     else:
         st.info("Nenhum usuário cadastrado ainda.")
-
-
