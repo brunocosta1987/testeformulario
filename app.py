@@ -72,9 +72,24 @@ if menu == "Cadastrar":
 elif menu == "Consultar":
     st.subheader("Lista de Usuários Cadastrados")
     usuarios = consultar_usuarios()
+
     if usuarios:
-        for usuario in usuarios:
-            st.write(f"**Nome:** {usuario[0]} {usuario[1]} | **Email:** {usuario[2]}")
+        df = pd.DataFrame(usuarios, columns=["Nome", "Sobrenome", "Email"])
+        st.dataframe(df)
+
+        # Botão para download como Excel
+        output = BytesIO()
+        with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
+            df.to_excel(writer, index=False, sheet_name='Usuarios')
+        output.seek(0)
+
+        st.download_button(
+            label="📥 Baixar como Excel",
+            data=output,
+            file_name="usuarios.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
     else:
         st.info("Nenhum usuário cadastrado ainda.")
+
 
