@@ -33,6 +33,27 @@ def consultar_usuarios():
     conn.close()
     return dados
 
+# Estilo e animações
+st.markdown("""
+    <style>
+        .sidebar .stSelectbox > div {
+            transition: transform 0.2s ease;
+        }
+        .sidebar .stSelectbox > div:hover {
+            transform: scale(1.03);
+        }
+        .sidebar .stSelectbox > div:active {
+            transform: scale(0.97);
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+# Título
+st.markdown("<h1 style='text-align: center;'>Cadastro de Usuários</h1>", unsafe_allow_html=True)
+
+# Menu lateral
+menu = st.sidebar.selectbox("Menu", ["Cadastrar", "Consultar"])
+
 # Título do app
 st.title("Cadastro de Usuários")
 
