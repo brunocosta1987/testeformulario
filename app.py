@@ -16,7 +16,7 @@ def conectar_db():
     conn.commit()
     return conn
 
-# Função para inserir dados no banco
+# Função para inserir dados
 def inserir_usuario(nome, sobrenome, email):
     conn = conectar_db()
     c = conn.cursor()
@@ -24,7 +24,7 @@ def inserir_usuario(nome, sobrenome, email):
     conn.commit()
     conn.close()
 
-# Função para consultar dados no banco
+# Função para consultar dados
 def consultar_usuarios():
     conn = conectar_db()
     c = conn.cursor()
@@ -54,12 +54,7 @@ st.markdown("<h1 style='text-align: center;'>Cadastro de Usuários</h1>", unsafe
 # Menu lateral
 menu = st.sidebar.selectbox("Menu", ["Cadastrar", "Consultar"])
 
-# Título do app
-st.title("Cadastro de Usuários")
-
-# Menu superior
-menu = st.sidebar.selectbox("Menu", ["Cadastrar", "Consultar"])
-
+# Tela de cadastro
 if menu == "Cadastrar":
     st.subheader("Cadastrar Novo Usuário")
     nome = st.text_input("Nome")
@@ -73,6 +68,7 @@ if menu == "Cadastrar":
         else:
             st.warning("Por favor, preencha todos os campos.")
 
+# Tela de consulta
 elif menu == "Consultar":
     st.subheader("Lista de Usuários Cadastrados")
     usuarios = consultar_usuarios()
@@ -81,3 +77,4 @@ elif menu == "Consultar":
             st.write(f"**Nome:** {usuario[0]} {usuario[1]} | **Email:** {usuario[2]}")
     else:
         st.info("Nenhum usuário cadastrado ainda.")
+
